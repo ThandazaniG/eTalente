@@ -3,10 +3,7 @@ package com.eviro.assessment.grad001.ThandazaniGwampa.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -16,8 +13,12 @@ import java.util.Objects;
 @AllArgsConstructor
 @RequiredArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
 public class Image {
-    @Id private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
     @NonNull @Column(nullable = false) @NotEmpty(message = "image format is required")
     @Size(min = 9, message = "image format must contain 9 or more characters")
     private String imageFormat;
@@ -28,6 +29,10 @@ public class Image {
     @Column(length = 3072)
     private byte[] imageData;
     @OneToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumns({
+            @JoinColumn(name="name",referencedColumnName = "name"),
+            @JoinColumn(name = "surname", referencedColumnName = "surname")
+    })
     private AccountProfile company;
 
     @Override

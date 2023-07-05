@@ -1,15 +1,10 @@
 package com.eviro.assessment.grad001.ThandazaniGwampa.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.EmbeddedId;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
+
 
 import java.util.Objects;
 
@@ -18,9 +13,14 @@ import java.util.Objects;
 @AllArgsConstructor
 @RequiredArgsConstructor
 @NoArgsConstructor
+@Setter
+@Getter
 public class AccountProfile {
-      @EmbeddedId
-      private AccountProfileID id;
+
+      @Id
+      @GeneratedValue(strategy = GenerationType.AUTO)
+      private Long id;
+
       @NonNull @Column(nullable = false) @NotEmpty(message = "name is required")
       @Size(min = 1, message = "name must contain more than 0 characters")
       private String name;
