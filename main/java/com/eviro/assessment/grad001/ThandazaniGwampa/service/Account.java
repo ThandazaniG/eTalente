@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface Account {
-
+    void saveAccount(String name, String surname);
     AccountProfile findAccountProfile(String name, String surname);
+
 }

@@ -20,12 +20,21 @@ public class AccountProfileService  implements  Account{
      * @param account  to be saved
      *
      */
-    protected void save(@Validated AccountProfile account) {
+    protected void save(AccountProfile account) {
         if(account == null)throw new NullPointerException("Account is invalid");
-        if(repository.existsById(account.getId())) throw new DuplicateAccountProfile("Account already exists");
+        if(repository.findAccountProfile(account.getName(), account.getSurname())!=null) throw new DuplicateAccountProfile("Account already exists");
         repository.save(account);
     }
 
+
+    /**
+     * @param name is the name of Account
+     * @param surname is the surname of Account
+     */
+    @Override
+    public void saveAccount(String name, String surname) {
+        save(AccountProfile.builder().name(name).surname(surname).build());
+    }
 
     /**
      * @param name  of the  accountProfile to find
@@ -36,7 +45,7 @@ public class AccountProfileService  implements  Account{
     @Override
     public AccountProfile findAccountProfile(String name, String surname) {
         var account = repository.findAccountProfile(name, surname);
-        if(account==null) throw  new AccountProfileNofFound("AccountProfile is not found");
+        if(account==null) throw new AccountProfileNofFound("AccountProfile is not found");
         return account;
     }
 }
