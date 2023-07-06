@@ -1,12 +1,9 @@
 package com.eviro.assessment.grad001.ThandazaniGwampa.model;
-
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
-
-
 import java.util.Objects;
 
 @Entity

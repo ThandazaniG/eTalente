@@ -1,6 +1,5 @@
 package com.eviro.assessment.grad001.ThandazaniGwampa.service;
 
-import com.eviro.assessment.grad001.ThandazaniGwampa.dto.AccountEvent;
 import com.eviro.assessment.grad001.ThandazaniGwampa.exception.DuplicateImage;
 import com.eviro.assessment.grad001.ThandazaniGwampa.exception.ImageNofFound;
 import com.eviro.assessment.grad001.ThandazaniGwampa.exception.ImageNotValid;
@@ -54,7 +53,7 @@ public class ImageService implements FileParser{
               // publisher.publishEvent(new AccountEvent(fileContents[0],fileContents[1])); ///
                 account.saveAccount(fileContents[0],fileContents[1]);
                var accountProfile = account.findAccountProfile(fileContents[0],fileContents[1]);
-               var image = new Image(fileContents[2], fileContents[3].getBytes());
+               var image = new Image(fileContents[2], Base64.getDecoder().decode(fileContents[3].getBytes()));
                image.setCompany(accountProfile);
                if(repository.findImageByNameAndSurname(accountProfile.getName(), accountProfile.getSurname())!=null) throw  new DuplicateImage("Image already exists");
                repository.save(image);
@@ -108,6 +107,13 @@ public class ImageService implements FileParser{
         }
         return uri;
     }
+
+    /**
+     *
+     * @param name is the name of the Account
+     * @param surname is the surname of the Account
+     * @return the FileSystemResource
+     */
     public FileSystemResource gethttpImageLink(String name, String surname){
         AccountProfile acc = account.findAccountProfile(name, surname);
         var image = repository.findAllImages().stream().filter(img -> img.getCompany().equals(acc)).toList();

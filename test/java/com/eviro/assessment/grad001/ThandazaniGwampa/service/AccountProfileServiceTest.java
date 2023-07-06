@@ -30,26 +30,26 @@ class AccountProfileServiceTest {
     void testNullAccount(){
         var output = assertThrows(NullPointerException.class, ()->service.save(null));
         assertEquals("Account is invalid", output.getMessage());
-        verify(accountProfileRepository, times(0)).existsById(anyLong());
+        verify(accountProfileRepository, times(0)).findAccountProfile(null, null);
         verify(accountProfileRepository, times(0)).save(any());
     }
     @ParameterizedTest
     @CsvSource(value = {"1, Zani, Health","2, Lunga, Engineering"},delimiter = ',')
     void testExitingAccount(Long id, String name, String surname){
         var account = new AccountProfile(id,name, surname);
-        when(accountProfileRepository.existsById(account.getId())).thenReturn(true);
+        when(accountProfileRepository.findAccountProfile(account.getName(), account.getSurname())).thenReturn(account);
         var output = assertThrows(DuplicateAccountProfile.class, ()->service.save(account));
         assertEquals("Account already exists", output.getMessage());
-        verify(accountProfileRepository, times(1)).existsById(account.getId());
+        verify(accountProfileRepository, times(1)).findAccountProfile(account.getName(), account.getSurname());
         verify(accountProfileRepository, times(0)).save(account);
     }
     @ParameterizedTest
     @CsvSource(value = {"1, Zani, Health","2, Lunga, Engineering"},delimiter = ',')
     void testSuccessfulSavedAccount(String name, String surname){
         var account = new AccountProfile(name, surname);
-        when(accountProfileRepository.existsById(account.getId())).thenReturn(false);
+        when(accountProfileRepository.findAccountProfile(account.getName(), account.getSurname())).thenReturn(null);
          service.save(account);
-        verify(accountProfileRepository, times(1)).existsById(account.getId());
+        verify(accountProfileRepository, times(1)).findAccountProfile(account.getName(), account.getSurname());
         verify(accountProfileRepository, times(1)).save(account);
     }
 
