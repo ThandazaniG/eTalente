@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
 
 
 import java.util.Objects;
@@ -15,10 +16,17 @@ import java.util.Objects;
 @NoArgsConstructor
 @Setter
 @Getter
+@Builder
 public class AccountProfile {
+    @Id
+    @GenericGenerator(name="cmrSeq", strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+            parameters = {
+                    @org.hibernate.annotations.Parameter(name = "sequence_ID", value = "SEQUENCE")}
+    )
+    @GeneratedValue(generator = "sequence_ID")
+    @Column(name = "id", nullable = false)
 
-      @Id
-      @GeneratedValue(strategy = GenerationType.AUTO)
+     // @GeneratedValue(strategy = GenerationType.AUTO)
       private Long id;
 
       @NonNull @Column(nullable = false) @NotEmpty(message = "name is required")

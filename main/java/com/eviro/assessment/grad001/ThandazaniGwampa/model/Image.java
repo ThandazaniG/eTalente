@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -17,7 +18,13 @@ import java.util.Objects;
 @Setter
 public class Image {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    //@GeneratedValue(strategy = GenerationType.AUTO)
+    @GenericGenerator(name="cmrSeq", strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+            parameters = {
+                    @org.hibernate.annotations.Parameter(name = "sequence_ID", value = "SEQUENCE")}
+    )
+    @GeneratedValue(generator = "sequence_ID")
+    @Column(name = "id", nullable = false)
     private Long id;
     @NonNull @Column(nullable = false) @NotEmpty(message = "image format is required")
     @Size(min = 9, message = "image format must contain 9 or more characters")
