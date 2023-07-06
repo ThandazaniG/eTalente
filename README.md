@@ -1,5 +1,5 @@
 # ETalenteApplication
-
+A Base64 image data is converted into an image file
 ### Base64 Image Data Converter
 The application acts as a file parser and converts
 the contents of the file and
